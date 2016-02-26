@@ -27,14 +27,44 @@ def crawl_web(seed,max_depth): #Main Program - Takes as input seed link and the 
     tocrawl = [[seed, 0]] #WILL CONTAIN links and thier depths
     depth = 0
     crawled = []
+    index = []
     while tocrawl and depth <= max_depth: #keep crawling till all pages are crawled or max depth is reached
         page, depth = tocrawl[0]
         tocrawl = tocrawl[1:]
         if page not in crawled:
-            union(tocrawl, get_all_links(get_page(page), depth))
+            content = get_page(page)
+            add_page_to_index(index,page,content)
+            union(tocrawl, get_all_links(content, depth))
             crawled.append(page)
         if tocrawl:
             depth = tocrawl[0][1] # assign depth of the next element in the to crawl list
         else:
             break
-    return crawled
+    return index
+
+def get_page(url):#Program to get page content
+	try:
+	    import urllib
+	    return urllib.urlopen(url).read()
+
+	except:
+	    return "error"
+
+def add_to_index(index, keyword, url):#Program searches if keyword and url are
+    for lineIndex in index: #in index, and if not, adds it to index
+        if lineIndex[0] == keyword:
+            if url not in lineIndex[1]:
+                lineIndex[1].append(url)
+            return
+    index.append([keyword, [url]])
+
+def lookup(index, keyword):#program looks up keyword in index and gives
+    for lineIndex in index:#list of related URLs
+        if lineIndex[0] == keyword:
+            return entry[1]
+    return []
+
+def add_page_to_index(index, url, content):#takes all the contents in the page
+    words = content.split() #and creates Index
+    for keyword in words:
+        add_to_index(index, keyword, url)
