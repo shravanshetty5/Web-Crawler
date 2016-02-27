@@ -7,7 +7,7 @@ def get_next_target(page):   #Takes as input the extracted contents of the page 
     url = page[start_quote + 1:end_quote]
     return url, end_quote
 
-def union(p,q): # takes as input two strings and combines them without elements repeating
+def union(p,q): # Takes as input two strings and combines them without elements repeating
     for e in q:
         if e not in p:
             p.append(e)
@@ -48,7 +48,7 @@ def get_page(url):#Program to get page content
 	    return urllib.urlopen(url).read()
 
 	except:
-	    return "error"
+	    return ""
 
 def add_to_index(index, keyword, url):#Program searches if keyword and url are
     for lineIndex in index: #in index, and if not, adds it to index
